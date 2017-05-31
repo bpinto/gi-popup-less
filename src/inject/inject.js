@@ -1,13 +1,11 @@
 chrome.extension.sendMessage({}, function(response) {
-  var readyStateCheckInterval = setInterval(function() {
-    if (document.readyState === "complete") {
-      clearInterval(readyStateCheckInterval);
+  function injectScript(file_path, tag) {
+    var node = document.getElementsByTagName(tag)[0];
+    var script = document.createElement('script');
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('src', file_path);
+    node.appendChild(script);
+  }
 
-      // ----------------------------------------------------------
-      // This part of the script triggers when page is done loading
-      console.log("Hello. This message was sent from scripts/inject.js");
-      // ----------------------------------------------------------
-
-    }
-  }, 10);
+  injectScript(chrome.extension.getURL('src/web/web.js'), 'body');
 });
